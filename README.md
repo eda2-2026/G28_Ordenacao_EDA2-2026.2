@@ -83,7 +83,146 @@ O trabalho do Insertion Sort é proporcional ao número de **inversões** da ent
 
 ## Quick Sort
 
-> *Seção a cargo da dupla — implementação em `src/sorts/quick.py`.*
+### Funcionamento
+
+O Quick Sort usa **divisão e conquista**: escolhe um pivô, separa os elementos
+em dois grupos e repete o processo em cada grupo. Nesta implementação, o pivô
+é sempre o **primeiro elemento do intervalo**. A partição coloca os menores
+à esquerda e os maiores ou iguais à direita; depois posiciona o pivô em seu
+lugar definitivo.
+
+```text
+[ 3 7 1 5 ]   -> pivô = 3; compara 7, 1 e 5 com o pivô
+[ 3 1 7 5 ]   -> troca 1 com 7, levando o menor para a esquerda
+[ 1 | 3 | 7 5 ] -> coloca o pivô 3 na posição definitiva
+[ 1 | 3 | 5 7 ] -> ordena o lado direito usando 7 como pivô
+[ 1 3 5 7 ]
+```
+
+Neste exemplo, são **4 comparações e 6 movimentações**: três comparações na
+primeira partição, uma na segunda e três trocas efetivas.
+
+### Análise de complexidade
+
+| Caso | Entrada / divisão | Comparações | Complexidade |
+| :--- | :--- | :--- | :--- |
+| **Melhor** | pivôs dividem os intervalos em partes equilibradas | ordem de $n \log n$ | $O(n \log n)$ |
+| **Médio** | ordem aleatória, com chaves distintas | ordem de $n \log n$, em média | $O(n \log n)$ |
+| **Pior** | já ordenada, inversa ou com todas as chaves iguais | $\frac{n(n-1)}{2}$ | $O(n^2)$ |
+
+Com divisões equilibradas, há cerca de $\log n$ níveis, cada um com trabalho
+total $O(n)$. Quando o pivô é sempre um extremo, um lado fica vazio e o outro
+tem apenas um elemento a menos: $(n-1) + (n-2) + \cdots + 1$ comparações.
+Para **10.000 produtos ordenados**, isso resulta em **49.995.000 comparações**.
+No cenário quase ordenado, o resultado depende da posição dos códigos do lote
+novo; ele também pode gerar divisões desequilibradas e mantém pior caso $O(n^2)$.
+
+**Propriedades:**
+
+- **Não estável:** as trocas podem inverter a ordem de produtos com chaves
+  iguais. Por exemplo, `[2, 1A, 1B]` termina como `[1B, 1A, 2]`.
+- **Ordena na própria lista:** não cria listas auxiliares para as partições.
+  A pilha de intervalos usa memória auxiliar $O(\log n)$, pois o menor lado é
+  processado primeiro e o maior fica pendente.
+- **Sem recursão Python:** a pilha explícita evita `RecursionError`, mas não
+  elimina o tempo quadrático causado pela escolha do primeiro pivô.
+
+## Execução e gráficos
+
+```bash
+# cria um ambiente virtual para instalar as dependências do projeto
+python -m venv venv
+
+# ativa o ambiente virtual no PowerShell do Windows
+.\venv\Scripts\Activate.ps1
+
+# instala as bibliotecas necessárias, listadas em requirements.txt
+python -m pip install -r requirements.txt
+
+# executa as demonstrações de ordenação, estabilidade e comparação dos algoritmos
+python main.py
+
+# executa os testes automatizados de corretude e contagem de operações
+python testes.py
+
+# executa os experimentos e salva o CSV e os quatro gráficos em resultados/
+# pode levar alguns minutos, principalmente para 10.000 produtos
+# substitui os arquivos de resultados de uma execução anterior
+python comparacao.py
+```
+
+`main.py` é a demonstração e comparação das ordenações. `testes.py` verificam os dois algoritmos nos quatro cenários, entradas triviais e repetidas, estabilidade do Insertion,
+contagens de operações e Quick Sort com 10.000 produtos ordenados. `comparacao.py` gera **quatro
+gráficos de tempo**, um por cenário, e **um CSV** com as medianas de tempo,
+comparações e movimentações dos dois algoritmos.
+
+São usados 1.000, 2.500, 5.000 e 10.000 produtos, três repetições e semente 42.
+Cada repetição gera uma nova base; os dois algoritmos recebem cópias da mesma
+entrada. A ordem dos métodos é alternada. Geração, cópia e validação ficam fora
+do cronômetro; a contagem de operações faz parte do tempo medido.
+
+Para uma execução menor, altere `TAMANHOS` e `REPETICOES` no final de
+`comparacao.py`. A execução completa pode levar alguns minutos e substitui
+os arquivos em `resultados/`. Os resultados incluídos usam os valores padrão.
+
+```text
+resultados/
+    resumo.csv
+    graficos/
+        tempo_aleatorio.png
+        tempo_ordenado.png
+        tempo_quase_ordenado.png
+        tempo_inverso.png
+```
+
+Os tempos são medianas de três execuções locais e variam conforme o computador.
+Os gráficos usam escala linear, com escala vertical própria para cada cenário.
+
+### Gráficos de tempo
+
+#### Entrada aleatória
+
+![Tempo — aleatório](resultados/graficos/tempo_aleatorio.png)
+
+#### Entrada já ordenada
+
+![Tempo — ordenado](resultados/graficos/tempo_ordenado.png)
+
+#### Entrada quase ordenada
+
+![Tempo — quase ordenado](resultados/graficos/tempo_quase_ordenado.png)
+
+#### Entrada inversa
+
+![Tempo — inverso](resultados/graficos/tempo_inverso.png)
+
+Consulte as [medianas de tempo e operações](resultados/resumo.csv).
+
+### Análise dos resultados registrados
+
+Medianas de tempo para **10.000 produtos**, em segundos:
+
+| Cenário | Insertion Sort | Quick Sort |
+| :--- | ---: | ---: |
+| Aleatório | 10.394101 | 0.089705 |
+| Já ordenado | 0.005703 | 14.680380 |
+| Quase ordenado | 0.205022 | 1.132010 |
+| Ordem inversa | 21.004516 | 16.840090 |
+
+- **Aleatório:** Quick Sort foi mais rápido; as medianas foram 156.098
+  comparações no Quick e 24.924.586 no Insertion, coerentes com seus comportamentos médios.
+- **Ordenado:** Insertion fez 9.999 comparações, contra 49.995.000 no Quick.
+  O primeiro pivô explica as partições desequilibradas e o pior caso do Quick.
+- **Quase ordenado:** Insertion foi mais rápido nesta base, com 507.814
+  comparações contra 3.650.095 no Quick. Um lote fixado em 1% cresce com N;
+  esse cenário não garante tempo linear ao Insertion.
+- **Inverso:** ambos fizeram 49.995.000 comparações. O Quick foi mais rápido
+  nesta execução, mas ambos permanecem quadráticos. O Insertion fez 50.004.999
+  movimentações e o Quick, 10.000; a mesma classe assintótica não implica tempos iguais.
+
+Essas medições ilustram o comportamento; a análise assintótica vem do algoritmo,
+não apenas de quatro pontos no gráfico. Outras cargas de trabalho do computador
+podem alterar os tempos. O CSV registra a mediana de cada métrica das três repetições.
 
 ## Integrantes
 
@@ -94,4 +233,4 @@ O trabalho do Insertion Sort é proporcional ao número de **inversões** da ent
 
 ## Vídeo de Apresentação
 
-> *Link a adicionar.*
+[![Apresentação da Ordenação no Estoque](https://img.shields.io/badge/▶_Assistir_no_YouTube-red?logo=youtube&logoColor=white&style=for-the-badge)](LINK_DO_SEU_VIDEO_AQUI)
