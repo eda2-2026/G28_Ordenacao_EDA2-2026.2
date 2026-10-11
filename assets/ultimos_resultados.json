@@ -3,128 +3,256 @@
         "n": 1000,
         "cenario": "aleatorio",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 28.852200000073935,
-        "comparacoes": 246936,
-        "movimentacoes": 246932
+        "tempo_ms": 92.03549999801908,
+        "comparacoes": 240281,
+        "movimentacoes": 240281
+    },
+    {
+        "n": 1000,
+        "cenario": "aleatorio",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 6.419299999834038,
+        "comparacoes": 10382,
+        "movimentacoes": 10260
     },
     {
         "n": 1000,
         "cenario": "ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 0.15050000001792796,
+        "tempo_ms": 0.6014000027789734,
         "comparacoes": 999,
         "movimentacoes": 0
     },
     {
         "n": 1000,
+        "cenario": "ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 159.3274000006204,
+        "comparacoes": 499500,
+        "movimentacoes": 0
+    },
+    {
+        "n": 1000,
         "cenario": "quase_ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 0.7385999997495674,
-        "comparacoes": 5997,
-        "movimentacoes": 5008
+        "tempo_ms": 1.828099997510435,
+        "comparacoes": 4605,
+        "movimentacoes": 3616
+    },
+    {
+        "n": 1000,
+        "cenario": "quase_ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 96.78020000137622,
+        "comparacoes": 344716,
+        "movimentacoes": 2052
     },
     {
         "n": 1000,
         "cenario": "inverso",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 57.7264000003197,
+        "tempo_ms": 209.88909999869065,
         "comparacoes": 499500,
         "movimentacoes": 500499
+    },
+    {
+        "n": 1000,
+        "cenario": "inverso",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 170.2302999983658,
+        "comparacoes": 499500,
+        "movimentacoes": 1000
     },
     {
         "n": 2500,
         "cenario": "aleatorio",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 196.25209999958315,
-        "comparacoes": 1576738,
-        "movimentacoes": 1576741
+        "tempo_ms": 671.1246999984724,
+        "comparacoes": 1555129,
+        "movimentacoes": 1555129
+    },
+    {
+        "n": 2500,
+        "cenario": "aleatorio",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 14.932599999156082,
+        "comparacoes": 32521,
+        "movimentacoes": 28178
     },
     {
         "n": 2500,
         "cenario": "ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 0.4056999996464583,
+        "tempo_ms": 1.547500000015134,
         "comparacoes": 2499,
         "movimentacoes": 0
     },
     {
         "n": 2500,
+        "cenario": "ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 846.2827000003017,
+        "comparacoes": 3123750,
+        "movimentacoes": 0
+    },
+    {
+        "n": 2500,
         "cenario": "quase_ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 4.646800000045914,
-        "comparacoes": 36199,
-        "movimentacoes": 33725
+        "tempo_ms": 14.931800000340445,
+        "comparacoes": 31526,
+        "movimentacoes": 29052
+    },
+    {
+        "n": 2500,
+        "cenario": "quase_ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 197.89569999920786,
+        "comparacoes": 704798,
+        "movimentacoes": 8418
     },
     {
         "n": 2500,
         "cenario": "inverso",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 383.8900000000649,
+        "tempo_ms": 1310.3730000002543,
         "comparacoes": 3123750,
         "movimentacoes": 3126249
+    },
+    {
+        "n": 2500,
+        "cenario": "inverso",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 1019.6985000002314,
+        "comparacoes": 3123750,
+        "movimentacoes": 2500
     },
     {
         "n": 5000,
         "cenario": "aleatorio",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 822.9262000004383,
-        "comparacoes": 6277831,
-        "movimentacoes": 6277831
+        "tempo_ms": 2858.735300000262,
+        "comparacoes": 6232901,
+        "movimentacoes": 6232904
+    },
+    {
+        "n": 5000,
+        "cenario": "aleatorio",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 32.52839999913704,
+        "comparacoes": 71005,
+        "movimentacoes": 64108
     },
     {
         "n": 5000,
         "cenario": "ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 0.8487000004606671,
+        "tempo_ms": 2.3733000016363803,
         "comparacoes": 4999,
         "movimentacoes": 0
     },
     {
         "n": 5000,
+        "cenario": "ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 3531.941299999744,
+        "comparacoes": 12497500,
+        "movimentacoes": 0
+    },
+    {
+        "n": 5000,
         "cenario": "quase_ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 21.235299999716517,
-        "comparacoes": 151689,
-        "movimentacoes": 146740
+        "tempo_ms": 48.28049999923678,
+        "comparacoes": 115864,
+        "movimentacoes": 110915
+    },
+    {
+        "n": 5000,
+        "cenario": "quase_ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 577.5603000001865,
+        "comparacoes": 2112963,
+        "movimentacoes": 17890
     },
     {
         "n": 5000,
         "cenario": "inverso",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 1709.9669999997786,
+        "tempo_ms": 5413.619900002232,
         "comparacoes": 12497500,
         "movimentacoes": 12502499
+    },
+    {
+        "n": 5000,
+        "cenario": "inverso",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 4386.653800000204,
+        "comparacoes": 12497500,
+        "movimentacoes": 5000
     },
     {
         "n": 10000,
         "cenario": "aleatorio",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 3546.2707999995473,
-        "comparacoes": 24972251,
-        "movimentacoes": 24972257
+        "tempo_ms": 11263.016000000789,
+        "comparacoes": 25044708,
+        "movimentacoes": 25044703
+    },
+    {
+        "n": 10000,
+        "cenario": "aleatorio",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 78.24839999739197,
+        "comparacoes": 152281,
+        "movimentacoes": 141830
     },
     {
         "n": 10000,
         "cenario": "ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 1.7416000000594067,
+        "tempo_ms": 4.663299998355797,
         "comparacoes": 9999,
+        "movimentacoes": 0
+    },
+    {
+        "n": 10000,
+        "cenario": "ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 13761.438300000009,
+        "comparacoes": 49995000,
         "movimentacoes": 0
     },
     {
         "n": 10000,
         "cenario": "quase_ordenado",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 73.69429999926069,
-        "comparacoes": 510834,
-        "movimentacoes": 500935
+        "tempo_ms": 191.5915000026871,
+        "comparacoes": 482871,
+        "movimentacoes": 472972
+    },
+    {
+        "n": 10000,
+        "cenario": "quase_ordenado",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 1198.3658999997715,
+        "comparacoes": 3821815,
+        "movimentacoes": 37624
     },
     {
         "n": 10000,
         "cenario": "inverso",
         "algoritmo": "Insertion Sort",
-        "tempo_ms": 7656.931299999997,
+        "tempo_ms": 21761.357600000338,
         "comparacoes": 49995000,
         "movimentacoes": 50004999
+    },
+    {
+        "n": 10000,
+        "cenario": "inverso",
+        "algoritmo": "Quick Sort",
+        "tempo_ms": 16790.99519999727,
+        "comparacoes": 49995000,
+        "movimentacoes": 10000
     }
 ]
