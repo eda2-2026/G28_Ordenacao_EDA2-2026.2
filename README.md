@@ -254,49 +254,101 @@ Medianas para **10.000 produtos**, em milissegundos:
 
 ## Resultados e análise experimental
 
-Tempo = mediana de 3 execuções; comparações contadas pelo próprio algoritmo. A mesma base foi entregue a todos os cenários.
+Tempo = mediana de 3 execuções; comparações contadas pelo próprio algoritmo.
+Todas as tabelas abaixo usam os dados atuais de `assets/ultimos_resultados.json`,
+os mesmos usados nos gráficos. Em cada cenário, os métodos receberam cópias da
+mesma entrada. Os tempos são específicos desta execução e deste computador.
 
 ### 1. Insertion Sort — tempo (ms)
 
 | Tamanho (N) | Aleatório | Já ordenado | Quase ordenado | Ordem inversa |
 | :--- | ---: | ---: | ---: | ---: |
-| **1.000** | 28,85 ms | 0,15 ms | 0,74 ms | 57,73 ms |
-| **2.500** | 196,25 ms | 0,41 ms | 4,65 ms | 383,89 ms |
-| **5.000** | 822,93 ms | 0,85 ms | 21,24 ms | 1.709,97 ms |
-| **10.000** | 3.546,27 ms | 1,74 ms | 73,69 ms | 7.656,93 ms |
+| **1.000** | 92,04 ms | 0,60 ms | 1,83 ms | 209,89 ms |
+| **2.500** | 671,12 ms | 1,55 ms | 14,93 ms | 1.310,37 ms |
+| **5.000** | 2.858,74 ms | 2,37 ms | 48,28 ms | 5.413,62 ms |
+| **10.000** | 11.263,02 ms | 4,66 ms | 191,59 ms | 21.761,36 ms |
 
 ### 2. Insertion Sort — comparações (medido x teórico)
 
-| Tamanho (N) | Já ordenado <br> (teórico $n-1$) | Quase ordenado <br> (teórico $n^2/200$) | Aleatório <br> (teórico $n^2/4$) | Ordem inversa <br> (teórico $n(n-1)/2$) |
+| Tamanho (N) | Já ordenado <br> (exato $n-1$) | Quase ordenado <br> (aproximação $n^2/200$) | Aleatório <br> (aproximação $n^2/4$) | Ordem inversa <br> (exato $n(n-1)/2$) |
 | :--- | ---: | ---: | ---: | ---: |
-| **1.000** | 999 <br> (999) | 5.997 <br> (5.000) | 246.936 <br> (250.000) | 499.500 <br> (499.500) |
-| **2.500** | 2.499 <br> (2.499) | 36.199 <br> (31.250) | 1.576.738 <br> (1.562.500) | 3.123.750 <br> (3.123.750) |
-| **5.000** | 4.999 <br> (4.999) | 151.689 <br> (125.000) | 6.277.831 <br> (6.250.000) | 12.497.500 <br> (12.497.500) |
-| **10.000** | 9.999 <br> (9.999) | 510.834 <br> (500.000) | 24.972.251 <br> (25.000.000) | 49.995.000 <br> (49.995.000) |
+| **1.000** | 999 <br> (999) | 4.605 <br> (5.000) | 240.281 <br> (250.000) | 499.500 <br> (499.500) |
+| **2.500** | 2.499 <br> (2.499) | 31.526 <br> (31.250) | 1.555.129 <br> (1.562.500) | 3.123.750 <br> (3.123.750) |
+| **5.000** | 4.999 <br> (4.999) | 115.864 <br> (125.000) | 6.232.901 <br> (6.250.000) | 12.497.500 <br> (12.497.500) |
+| **10.000** | 9.999 <br> (9.999) | 482.871 <br> (500.000) | 25.044.708 <br> (25.000.000) | 49.995.000 <br> (49.995.000) |
 
-Os casos ordenado e inverso batem **exatamente** com a fórmula; o aleatório e o quase ordenado ficam a poucos por cento do valor esperado (variam com o sorteio).
+Ordenado e inverso coincidem exatamente com as fórmulas. Aleatório e quase
+ordenado são aproximações: variam com a base sorteada, especialmente com a
+posição dos códigos do lote novo.
 
-### 3. Gráficos
+### 3. Gráficos do Insertion Sort
 
 ![Tempo do Insertion Sort por cenário](assets/insertion_tempo_cenarios.png)
 
-![Comparações medidas x teóricas](assets/insertion_comparacoes.png)
-
-![Tempo por cenário no maior N](assets/comparacao_cenarios.png)
+![Comparações do Insertion medidas x teóricas](assets/insertion_comparacoes.png)
 
 ### 4. Análise do Insertion Sort
 
-* **Uma diferença de mais de 4.000 vezes com o mesmo algoritmo e os mesmos produtos.** Com 10.000 produtos, ordenar o estoque já ordenado levou **1,74 ms**; em ordem inversa, **7,66 s**. Nada mudou no código — só a ordem em que os dados chegaram.
+* **A ordem da entrada muda muito o custo.** Com 10.000 produtos, a entrada ordenada levou **4,66 ms**, contra **21,76 s** na inversa: cerca de **4.667 vezes** mais tempo.
 
-* **O crescimento confirma a análise assintótica.** Dobrando N de 5.000 para 10.000, o tempo no cenário aleatório foi de 823 ms para 3.546 ms (**≈ 4×**, comportamento quadrático), enquanto no cenário ordenado foi de 0,85 ms para 1,74 ms (**≈ 2×**, comportamento linear).
+* **O crescimento é coerente com a análise assintótica.** De 5.000 para 10.000 produtos, o tempo aleatório cresceu **3,94×** e o ordenado, **1,96×**, ilustrando os comportamentos quadrático e linear.
 
-* **O ponto forte do Insertion é a reposição do dia a dia.** No cenário quase ordenado (estoque em ordem + 1% de produtos novos), ele ordenou 10.000 produtos em **73,69 ms** — **48× mais rápido** que a mesma base embaralhada. Como o custo depende das inversões, e não só do tamanho, poucos itens fora do lugar significam pouco trabalho.
+* **O ponto forte é a reposição diária.** No cenário quase ordenado, 10.000 produtos levaram **191,59 ms**, cerca de **59× menos tempo** que a entrada aleatória. Poucas inversões reduzem o trabalho; com lote proporcional a N, isso não garante tempo linear.
 
-* **O ponto fraco é a carga desorganizada.** Em uma importação aleatória ou invertida, o custo $O(n^2)$ torna o Insertion inviável para bases grandes — é nesse cenário que um método $O(n \log n)$, como o Quick Sort, deve ser escolhido.
+* **O ponto fraco é a carga desorganizada.** Nas entradas aleatória e inversa, o custo é quadrático. O Quick com primeiro pivô ajuda na aleatória, mas também tem pior caso quadrático na inversa.
 
-### 5. Recomendação para o cliente
+### 5. Quick Sort — tempo (ms)
 
-> *A completar após os resultados do Quick Sort.*
+| Tamanho (N) | Aleatório | Já ordenado | Quase ordenado | Ordem inversa |
+| :--- | ---: | ---: | ---: | ---: |
+| **1.000** | 6,42 ms | 159,33 ms | 96,78 ms | 170,23 ms |
+| **2.500** | 14,93 ms | 846,28 ms | 197,90 ms | 1.019,70 ms |
+| **5.000** | 32,53 ms | 3.531,94 ms | 577,56 ms | 4.386,65 ms |
+| **10.000** | 78,25 ms | 13.761,44 ms | 1.198,37 ms | 16.791,00 ms |
+
+### 6. Quick Sort — comparações (medido x teórico)
+
+| Tamanho (N) | Aleatório <br> (referência $2n\ln(n)$) | Já ordenado <br> (exato $n(n-1)/2$) | Quase ordenado <br> (medido) | Ordem inversa <br> (exato $n(n-1)/2$) |
+| :--- | ---: | ---: | ---: | ---: |
+| **1.000** | 10.382 <br> (≈ 13.816) | 499.500 <br> (499.500) | 344.716 | 499.500 <br> (499.500) |
+| **2.500** | 32.521 <br> (≈ 39.120) | 3.123.750 <br> (3.123.750) | 704.798 | 3.123.750 <br> (3.123.750) |
+| **5.000** | 71.005 <br> (≈ 85.172) | 12.497.500 <br> (12.497.500) | 2.112.963 | 12.497.500 <br> (12.497.500) |
+| **10.000** | 152.281 <br> (≈ 184.207) | 49.995.000 <br> (49.995.000) | 3.821.815 | 49.995.000 <br> (49.995.000) |
+
+A referência $2n\ln(n)$ mostra o termo dominante do caso médio com chaves distintas,
+não uma contagem exata. Ordenado e inverso atingem exatamente o pior caso.
+No quase ordenado, as divisões dependem dos códigos do lote; não há uma fórmula
+exata determinada apenas por N e pela proporção de 1%.
+
+### 7. Gráficos do Quick Sort
+
+![Tempo do Quick Sort por cenário](assets/quick_tempo_cenarios.png)
+
+![Comparações do Quick medidas x referências teóricas](assets/quick_comparacoes.png)
+
+As cores e a escala logarítmica seguem o padrão do Insertion. Os pontos dos
+cenários ordenado e inverso ficam sobrepostos no gráfico de comparações.
+
+### 8. Análise do Quick Sort
+
+* **O ponto forte é a entrada aleatória.** Para 10.000 produtos, levou **78,25 ms**, contra **11.263,02 ms** do Insertion: cerca de **144× menos tempo** nesta execução. Foram **152.281 comparações**, coerentes com o comportamento médio $O(n\log n)$.
+
+* **O primeiro pivô prejudica entradas ordenadas.** O mesmo tamanho já ordenado levou **13,76 s** e **49.995.000 comparações**. Cada partição deixa um lado vazio e outro com apenas um elemento a menos, produzindo $O(n^2)$.
+
+* **A entrada quase ordenada também pode gerar divisões desequilibradas.** Foram **3.821.815 comparações** e **1.198,37 ms**, contra **191,59 ms** do Insertion. O lote pequeno não garante bom desempenho para esta escolha de pivô.
+
+* **Na inversa, o Quick também é quadrático.** De 5.000 para 10.000 produtos, o tempo cresceu **3,83×**. Para 10.000 produtos foram **49.995.000 comparações**, assim como no Insertion. O Quick fez **10.000 movimentações**, contra **50.004.999** do Insertion; isso ajuda a explicar tempos diferentes dentro da mesma classe assintótica.
+
+### 9. Recomendação para o cliente
+
+![Comparação de tempo por cenário no maior N](assets/comparacao_cenarios.png)
+
+Para a reposição diária ou o estoque já ordenado, **Insertion Sort** foi a melhor
+opção nesta execução. Para uma carga inicial aleatória, **Quick Sort** apresentou
+vantagem. Em entradas inversas, ambos são quadráticos: a versão de Quick com
+primeiro pivô não deve ser apresentada como uma solução eficiente para todos
+os formatos. Uma escolha de pivô aleatória ou mediana de três pode ser estudada
+como melhoria futura, mas não faz parte desta implementação.
 
 ## Integrantes
 
