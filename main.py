@@ -18,7 +18,7 @@ def imprimir_produtos(produtos):
         print(f"  {p.codigo:>8} | {p.nome:<12} | {p.categoria:<16} | R$ {p.preco:>6.2f}")
 
 def demo_ordenacao_por_codigo():
-    print("=== 1. Ordenação por código ===")
+    print("=== 1. Insertion Sort: ordenação por código ===")
     produtos = gerar_base_produtos(8)
 
     print("\nAntes:")
@@ -32,7 +32,7 @@ def demo_ordenacao_por_codigo():
           f"{estatisticas.movimentacoes} movimentações")
 
 def demo_estabilidade():
-    print("\n=== 2. Estabilidade: preço e depois categoria ===")
+    print("\n=== 2. Insertion Sort: estabilidade — preço e depois categoria ===")
     produtos = gerar_base_produtos(10)
 
     # primeiro por preço, depois por categoria: como o insertion é estável,
@@ -45,7 +45,7 @@ def demo_estabilidade():
 
 def demo_cenarios():
     n = 2_000
-    print(f"\n=== 3. Mesmo algoritmo, entradas diferentes (N = {n}) ===\n")
+    print(f"\n=== 3. Insertion Sort: entradas diferentes (N = {n}) ===\n")
     base = gerar_base_produtos(n)
 
     print(f"  {'Cenário':<15} | {'Comparações':>12} | {'Movimentações':>13}")
