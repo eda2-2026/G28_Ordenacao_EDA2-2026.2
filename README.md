@@ -47,6 +47,8 @@ Comparar dois métodos de ordenação com comportamentos opostos:
 ├── assets/
 │   ├── insertion_tempo_cenarios.png  # tempo x N do insertion nos 4 cenários
 │   ├── insertion_comparacoes.png     # comparações medidas x curvas teóricas
+│   ├── quick_tempo_cenarios.png      # tempo x N do quick nos 4 cenários
+│   ├── quick_comparacoes.png         # comparações do quick x referências teóricas
 │   ├── comparacao_cenarios.png       # tempo por cenário no maior N (todos os algoritmos)
 │   └── ultimos_resultados.json       # dados da última execução do benchmark
 │
@@ -62,9 +64,10 @@ Comparar dois métodos de ordenação com comportamentos opostos:
 │
 ├── .gitignore
 ├── comparacao.py                     # benchmark: algoritmos x cenários x tamanhos
-├── main.py                           # demonstração do insertion sort
+├── main.py                           # demonstração dos dois algoritmos
 ├── plot_results.py                   # leitura do JSON e geração dos gráficos
 ├── testes.py                         # testes de corretude
+├── requirements.txt                  # dependência: matplotlib
 └── README.md
 ```
 
@@ -81,7 +84,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # 2. instalar dependências
-pip install matplotlib
+python -m pip install -r requirements.txt
 
 # 3. execução dos scripts
 # demonstração (ordenação, estabilidade e custo por cenário)
@@ -90,7 +93,7 @@ python main.py
 # testes de corretude
 python testes.py
 
-# benchmark (padrão: 1.000, 2.500, 5.000 e 10.000) — leva cerca de 1 minuto
+# benchmark (padrão: 1.000, 2.500, 5.000 e 10.000) — pode levar alguns minutos
 python comparacao.py
 
 # ou com tamanhos personalizados
@@ -100,7 +103,7 @@ python comparacao.py 500 2000 4000
 python plot_results.py
 ```
 
-> **Por que não 100.000 produtos, como no trabalho de busca?** Os cenários $O(n^2)$ ficam inviáveis em Python: o Insertion Sort em ordem inversa já leva ~7,7 s com 10.000 produtos; com 100.000 seriam ~100× mais (mais de 12 minutos por execução).
+> **Por que não 100.000 produtos, como no trabalho de busca?** Nos casos quadráticos, aumentar a entrada de 10.000 para 100.000 pode aumentar o trabalho em cerca de 100 vezes. Por isso usamos os tamanhos previstos para este trabalho.
 
 ## Insertion Sort
 
@@ -143,7 +146,111 @@ O trabalho do Insertion Sort é proporcional ao número de **inversões** da ent
 
 ## Quick Sort
 
-> *Seção a cargo da dupla — implementação em `src/sorts/quick.py`.*
+### Funcionamento
+
+O Quick Sort usa **divisão e conquista**: escolhe um pivô, separa os elementos
+em dois grupos e repete o processo em cada grupo. Nesta implementação, o pivô
+é sempre o **primeiro elemento do intervalo**. A partição coloca os menores
+à esquerda e os maiores ou iguais à direita; depois posiciona o pivô em seu
+lugar definitivo.
+
+```text
+[ 3 7 1 5 ]   -> pivô = 3; compara 7, 1 e 5 com o pivô
+[ 3 1 7 5 ]   -> troca 1 com 7, levando o menor para a esquerda
+[ 1 | 3 | 7 5 ] -> coloca o pivô 3 na posição definitiva
+[ 1 | 3 | 5 7 ] -> ordena o lado direito usando 7 como pivô
+[ 1 3 5 7 ]
+```
+
+Neste exemplo, são **4 comparações e 6 movimentações**: três comparações na
+primeira partição, uma na segunda e três trocas efetivas.
+
+### Análise de complexidade
+
+| Caso | Entrada / divisão | Comparações | Complexidade |
+| :--- | :--- | :--- | :--- |
+| **Melhor** | pivôs dividem os intervalos em partes equilibradas | ordem de $n \log n$ | $O(n \log n)$ |
+| **Médio** | ordem aleatória, com chaves distintas | ordem de $n \log n$, em média | $O(n \log n)$ |
+| **Pior** | já ordenada, inversa ou com todas as chaves iguais | $\frac{n(n-1)}{2}$ | $O(n^2)$ |
+
+Com divisões equilibradas, há cerca de $\log n$ níveis, cada um com trabalho
+total $O(n)$. Quando o pivô é sempre um extremo, um lado fica vazio e o outro
+tem apenas um elemento a menos: $(n-1) + (n-2) + \cdots + 1$ comparações.
+Para **10.000 produtos ordenados**, isso resulta em **49.995.000 comparações**.
+No cenário quase ordenado, o resultado depende da posição dos códigos do lote
+novo; ele também pode gerar divisões desequilibradas e mantém pior caso $O(n^2)$.
+
+**Propriedades:**
+
+- **Não estável:** as trocas podem inverter a ordem de produtos com chaves
+  iguais. Por exemplo, `[2, 1A, 1B]` termina como `[1B, 1A, 2]`.
+- **Ordena na própria lista:** não cria listas auxiliares para as partições.
+  A pilha de intervalos usa memória auxiliar $O(\log n)$, pois o menor lado é
+  processado primeiro e o maior fica pendente.
+- **Sem recursão Python:** a pilha explícita evita `RecursionError`, mas não
+  elimina o tempo quadrático causado pela escolha do primeiro pivô.
+
+## Resultados e gráficos
+
+O fluxo é **comparacao.py → assets/ultimos_resultados.json → plot_results.py**.
+Para cada tamanho, uma base é gerada com a sequência aleatória inicializada com
+semente 42. Os dois algoritmos recebem cópias da mesma entrada em cada cenário.
+Cada medição usa três repetições da mesma entrada: o JSON guarda a mediana do
+tempo em **milissegundos** e as contagens de comparações e movimentações.
+Geração, cópia e validação ficam fora do cronômetro; a instrumentação é incluída.
+
+Os caminhos são baseados na pasta dos scripts. Para redesenhar os gráficos sem
+repetir o benchmark, execute somente `python plot_results.py`. Executar um
+benchmark menor substitui o JSON; rode o gerador depois para manter as imagens
+consistentes. Para retornar aos tamanhos completos, execute os dois scripts sem
+argumentos. Os tempos variam conforme o computador.
+
+### Insertion Sort
+
+![Insertion: tempo nos quatro cenários](assets/insertion_tempo_cenarios.png)
+
+![Insertion: comparações medidas e curvas teóricas](assets/insertion_comparacoes.png)
+
+### Quick Sort
+
+![Quick: tempo nos quatro cenários](assets/quick_tempo_cenarios.png)
+
+![Quick: comparações medidas e curvas teóricas](assets/quick_comparacoes.png)
+
+Os dois algoritmos usam o mesmo estilo, as mesmas cores para os cenários e escala
+logarítmica no eixo vertical. No Quick, a curva `2n ln(n)` é uma referência
+assintótica para o caso médio com códigos distintos, não uma previsão exata.
+A curva `n(n−1)/2` representa exatamente as comparações do pior caso. Os pontos
+ordenado e inverso podem ficar sobrepostos porque possuem a mesma contagem.
+
+### Comparação entre algoritmos
+
+![Tempos por cenário no maior tamanho](assets/comparacao_cenarios.png)
+
+Todas as figuras acima são geradas a partir do [mesmo JSON](assets/ultimos_resultados.json).
+Os tempos variam conforme o computador. Para comparar os métodos, use medições
+da mesma execução, sem misturar os resultados antigos de máquinas diferentes.
+
+### Análise dos resultados publicados
+
+Medianas para **10.000 produtos**, em milissegundos:
+
+| Cenário | Insertion Sort | Quick Sort |
+| :--- | ---: | ---: |
+| Aleatório | 11263.02 | 78.25 |
+| Já ordenado | 4.66 | 13761.44 |
+| Quase ordenado | 191.59 | 1198.37 |
+| Ordem inversa | 21761.36 | 16791.00 |
+
+- **Aleatório:** Quick Sort foi mais rápido, coerente com seu comportamento
+  médio de O(n log n), enquanto Insertion apresenta comportamento médio quadrático.
+- **Ordenado:** Insertion fez 9.999 comparações; Quick fez 49.995.000, pois o
+  primeiro pivô provoca divisões desequilibradas.
+- **Quase ordenado:** Insertion foi mais rápido nesta execução. O lote de 1%
+  cresce com N, portanto esse cenário não garante complexidade linear.
+- **Inverso:** ambos fizeram 49.995.000 comparações. Quick foi mais rápido nesta
+  execução, mas ambos permanecem quadráticos; contagens de movimentações diferentes
+  ajudam a explicar por que a mesma classe assintótica não implica tempos iguais.
 
 ## Integrantes
 
@@ -154,4 +261,4 @@ O trabalho do Insertion Sort é proporcional ao número de **inversões** da ent
 
 ## Vídeo de Apresentação
 
-> *Link a adicionar.*
+[![Apresentação da Ordenação no Estoque](https://img.shields.io/badge/▶_Assistir_no_YouTube-red?logo=youtube&logoColor=white&style=for-the-badge)](LINK_DO_SEU_VIDEO_AQUI)
