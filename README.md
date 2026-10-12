@@ -190,7 +190,7 @@ novo; ele também pode gerar divisões desequilibradas e mantém pior caso $O(n^
 - **Sem recursão Python:** a pilha explícita evita `RecursionError`, mas não
   elimina o tempo quadrático causado pela escolha do primeiro pivô.
 
-## Resultados e gráficos
+## Resultados e análise experimental
 
 O fluxo é **comparacao.py → assets/ultimos_resultados.json → plot_results.py**.
 Para cada tamanho, uma base é gerada com a sequência aleatória inicializada com
@@ -205,59 +205,7 @@ benchmark menor substitui o JSON; rode o gerador depois para manter as imagens
 consistentes. Para retornar aos tamanhos completos, execute os dois scripts sem
 argumentos. Os tempos variam conforme o computador.
 
-### Insertion Sort
-
-![Insertion: tempo nos quatro cenários](assets/insertion_tempo_cenarios.png)
-
-![Insertion: comparações medidas e curvas teóricas](assets/insertion_comparacoes.png)
-
-### Quick Sort
-
-![Quick: tempo nos quatro cenários](assets/quick_tempo_cenarios.png)
-
-![Quick: comparações medidas e curvas teóricas](assets/quick_comparacoes.png)
-
-Os dois algoritmos usam o mesmo estilo, as mesmas cores para os cenários e escala
-logarítmica no eixo vertical. No Quick, a curva `2n ln(n)` é uma referência
-assintótica para o caso médio com códigos distintos, não uma previsão exata.
-A curva `n(n−1)/2` representa exatamente as comparações do pior caso. Os pontos
-ordenado e inverso podem ficar sobrepostos porque possuem a mesma contagem.
-
-### Comparação entre algoritmos
-
-![Tempos por cenário no maior tamanho](assets/comparacao_cenarios.png)
-
-Todas as figuras acima são geradas a partir do [mesmo JSON](assets/ultimos_resultados.json).
-Os tempos variam conforme o computador. Para comparar os métodos, use medições
-da mesma execução, sem misturar os resultados antigos de máquinas diferentes.
-
-### Análise dos resultados publicados
-
-Medianas para **10.000 produtos**, em milissegundos:
-
-| Cenário | Insertion Sort | Quick Sort |
-| :--- | ---: | ---: |
-| Aleatório | 11263.02 | 78.25 |
-| Já ordenado | 4.66 | 13761.44 |
-| Quase ordenado | 191.59 | 1198.37 |
-| Ordem inversa | 21761.36 | 16791.00 |
-
-- **Aleatório:** Quick Sort foi mais rápido, coerente com seu comportamento
-  médio de O(n log n), enquanto Insertion apresenta comportamento médio quadrático.
-- **Ordenado:** Insertion fez 9.999 comparações; Quick fez 49.995.000, pois o
-  primeiro pivô provoca divisões desequilibradas.
-- **Quase ordenado:** Insertion foi mais rápido nesta execução. O lote de 1%
-  cresce com N, portanto esse cenário não garante complexidade linear.
-- **Inverso:** ambos fizeram 49.995.000 comparações. Quick foi mais rápido nesta
-  execução, mas ambos permanecem quadráticos; contagens de movimentações diferentes
-  ajudam a explicar por que a mesma classe assintótica não implica tempos iguais.
-
-## Resultados e análise experimental
-
-Tempo = mediana de 3 execuções; comparações contadas pelo próprio algoritmo.
-Todas as tabelas abaixo usam os dados atuais de `assets/ultimos_resultados.json`,
-os mesmos usados nos gráficos. Em cada cenário, os métodos receberam cópias da
-mesma entrada. Os tempos são específicos desta execução e deste computador.
+Tempo = mediana de 3 execuções; comparações e movimentações contadas pelo próprio algoritmo. Todas as tabelas e gráficos abaixo vêm do mesmo [`assets/ultimos_resultados.json`](assets/ultimos_resultados.json).
 
 ### 1. Insertion Sort — tempo (ms)
 
@@ -342,6 +290,15 @@ cenários ordenado e inverso ficam sobrepostos no gráfico de comparações.
 ### 9. Recomendação para o cliente
 
 ![Comparação de tempo por cenário no maior N](assets/comparacao_cenarios.png)
+
+Medianas para **10.000 produtos**, em milissegundos:
+
+| Cenário | Insertion Sort | Quick Sort |
+| :--- | ---: | ---: |
+| Aleatório | 11.263,02 | **78,25** |
+| Já ordenado | **4,66** | 13.761,44 |
+| Quase ordenado | **191,59** | 1.198,37 |
+| Ordem inversa | 21.761,36 | 16.791,00 |
 
 Para a reposição diária ou o estoque já ordenado, **Insertion Sort** foi a melhor
 opção nesta execução. Para uma carga inicial aleatória, **Quick Sort** apresentou
