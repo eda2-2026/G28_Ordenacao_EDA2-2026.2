@@ -309,10 +309,10 @@ como melhoria futura, mas não faz parte desta implementação.
 
 ## Integrantes
 
-| Nome | GitHub |
-|---|---|
-| Enzo Lopes | [@lopes061](https://github.com/lopes061) |
-| Luan Vinícius | [@luannvi](https://github.com/luannvi) |
+| Nome | Matrícula | GitHub |
+|---|---|---|
+| Enzo Lopes | 232002000 | [@lopes061](https://github.com/lopes061) |
+| Luan Vinícius | — | [@luannvi](https://github.com/luannvi) |
 
 ## Vídeo de Apresentação
 
