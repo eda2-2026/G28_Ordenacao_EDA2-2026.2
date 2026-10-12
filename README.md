@@ -312,7 +312,7 @@ como melhoria futura, mas não faz parte desta implementação.
 | Nome | Matrícula | GitHub |
 |---|---|---|
 | Enzo Lopes | 232002000 | [@lopes061](https://github.com/lopes061) |
-| Luan Vinícius | — | [@luannvi](https://github.com/luannvi) |
+| Luan Vinícius | 232004462 | [@luannvi](https://github.com/luannvi) |
 
 ## Vídeo de Apresentação
 
