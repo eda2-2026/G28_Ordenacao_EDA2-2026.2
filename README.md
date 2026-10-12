@@ -316,4 +316,4 @@ como melhoria futura, mas não faz parte desta implementação.
 
 ## Vídeo de Apresentação
 
-[![Apresentação da Ordenação no Estoque](https://img.shields.io/badge/▶_Assistir_no_YouTube-red?logo=youtube&logoColor=white&style=for-the-badge)](LINK_DO_SEU_VIDEO_AQUI)
+[![Apresentação da Ordenação no Estoque](https://img.shields.io/badge/▶_Assistir_no_YouTube-red?logo=youtube&logoColor=white&style=for-the-badge)](https://youtu.be/x3v1L7J3eLk)
